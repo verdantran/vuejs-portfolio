@@ -1,60 +1,84 @@
 <template>
-  <v-app>
-    <v-app-bar
+  <v-app id="sandbox">
+    <v-navigation-drawer
+      v-model="primaryDrawer.model"
+      :clipped="primaryDrawer.clipped"
+      :floating="primaryDrawer.floating"
+      :mini-variant="primaryDrawer.mini"
+      :permanent="primaryDrawer.type === 'permanent'"
+      :temporary="primaryDrawer.type === 'temporary'"
       app
-      color="primary"
-      dark
+      overflow
     >
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
+      <v-list-item>
+        <v-list-item-avatar>
+          <v-img src="https://randomuser.me/api/portraits/women/81.jpg"></v-img>
+        </v-list-item-avatar>
 
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
-      </div>
+        <v-list-item-content>
+          <v-list-item-title>Jane Smith</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
 
-      <v-spacer></v-spacer>
+      <v-divider></v-divider>
 
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
+      <v-list dense>
+        <v-list-item v-for="item in items" :key="item.title" link>
+          <v-list-item-icon>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+
+    <v-app-bar :clipped-left="primaryDrawer.clipped" app>
+      <v-app-bar-nav-icon
+        v-if="primaryDrawer.type !== 'permanent'"
+        @click.stop="primaryDrawer.model = !primaryDrawer.model"
+      />
+      <v-toolbar-title>My portfolio</v-toolbar-title>
     </v-app-bar>
 
     <v-content>
-      <HelloWorld/>
+      <v-container fluid>
+        <v-row align="center" justify="center">
+          <v-col cols="10">
+            <v-card>
+              <v-card-text></v-card-text>
+              <v-card-actions></v-card-actions>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-container>
     </v-content>
+
+    <v-footer :inset="footer.inset" app>
+      <span class="px-4">&copy; {{ new Date().getFullYear() }}</span>
+    </v-footer>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
-
 export default {
-  name: 'App',
-
-  components: {
-    HelloWorld,
-  },
-
   data: () => ({
-    //
-  }),
+    primaryDrawer: {
+      model: null,
+      type: "temporary",
+      clipped: false,
+      floating: false,
+      mini: false
+    },
+    items: [
+      { title: "Home", icon: "dashboard" },
+      { title: "About", icon: "question_answer" }
+    ],
+    footer: {
+      inset: false
+    }
+  })
 };
 </script>
